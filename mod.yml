@@ -1,0 +1,10 @@
+title: Ez codes
+originalAuthor: LMR, KSX387, Kate Hanami
+game: Kh2
+description: "Ez code from KH3 adapted to KH2FM \n\nHow to toggle Ez codes.\nmickey anywhere : L3+ ✕\nbetter cure cost : L3 + △\nmp recharge : L3 + ◯\ndrive recharge : L3 + ▢\nlonger drive : L3 + R1\nhp recharge : L3 + L2\nno restriction drive : L3 + L1\n"
+logo: icon.png
+assets:
+  - name: scripts/EZ.lua
+    method: copy
+    source:
+      - name: EZ.lua
