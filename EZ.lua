@@ -11,44 +11,135 @@ in_drive_frame = 0
 is_code_printed = false
 has_to_init = true
 
-mickey1_0_0_2 = {}
-mickey1_0 = {}
+mickey = {}
 
 no_rule_drive = {}
 
 function _OnInit()
-    offset = 0x56454E
-    sora_level_stat = 0x2A9A168 + 0x40 - offset
-    input = 0x711488 - offset
-    L3_triangle = 0x1002
-    L3_square = 0x8002
-    L3_circle = 0x2002
-    L3_cross = 0x4002
-    L3_L1 = 0x402
-    L3_L2 = 0x102
-    L3_R1 = 0x802
-    cure = 0x2A5A820 - offset + 0x40
-    cura = 0x2A5B4B0 - offset + 0x40
-    curaga = 0x2A5B4E0 - offset + 0x40
-    pause_status_address = 0x0AB9038 + 0x40 - offset
-    battle_state_address = 0x2A0EB04 - offset
-    is_controllable_address = 0x2A148A8 + 0x40 - offset
-    menu_status_address = 0x79A5D0 - offset
-    sora_unit_stat = 0x2A20C58 + 0x40 - offset
-    DriveList = 0x3F059E - offset
-    DriveWithoutParty = 0x3FF734 - offset
-    DriveWithoutForcedParty = 0x3E107C - offset
-    DriveForceEvents = 0x3FF788 - offset
-    PartyWontRemove = 0x3FE3C4 - offset
-    RoomTransitionDontRemoveParty = 0x3C07CE - offset
-    DriveWhenPartyisDead = 0x3F05BA - offset
-    current_form_adress = 0x40 + 0x09AA594 - offset
-    current_summon_adress = 0x40 + 0x09AA595 - offset
+end
+
+function adress_init()
+    if (GAME_ID == 0xF266B00B or GAME_ID == 0xFAF99301) and ENGINE_TYPE == "ENGINE" then --PCSX2
+        ConsolePrint("Ez code are not compatible with PS2 version")
+    elseif GAME_ID == 0x431219CC and ENGINE_TYPE == 'BACKEND' then --PC
+	    if ReadString(0x09A92F0,4) == 'KH2J' then --EGS
+            ConsolePrint("PC version (EGS) detected")
+            Sys3Pointer = 0x2AE5890
+            Btl0Pointer = 0x2AE5898
+            Sys3 = ReadLong(Sys3Pointer)
+            Btl0 = ReadLong(Btl0Pointer)
+            Save = 0x09A92F0
+            Now = 0x0716DF8
+            input = Now - 0x3970
+            battle_state_address = 0x2A10E44
+            pause_status_address = 0x0ABB2B8
+            is_controllable_address = 0x2A16C28
+            menu_status_address = Now - 0x5B4
+            sora_level_stat = Btl0 + 0x25928
+            cure_cost = Sys3 + 0x0A70
+            cura_cost = Sys3 + 0x1700
+            curaga_cost = Sys3 + 0x1730
+            sora_unit_stat = 0x2A22FD8
+            mickey_adress1 = 0x3FB7AE
+            mickey_adress2 = 0x3FB83A
+            mickey_adress3 = 0x3C5645
+            DriveList = 0x3F1CCE
+            DriveWithoutParty = 0x400E6
+            DriveWithoutForcedParty = 0x3E27AC
+            DriveForceEvents = 0x400EB8
+            PartyWontRemove = 0x3FFAF4
+            RoomTransitionDontRemoveParty = 0x3C1EFE
+            DriveWhenPartyisDead = 0x3F1CEA
+            current_form_adress = Save + 0x3524
+            current_summon_adress = Save + 0x3525
+            L3_triangle = 0x1002
+            L3_square = 0x8002
+            L3_circle = 0x2002
+            L3_cross = 0x4002
+            L3_L1 = 0x402
+            L3_L2 = 0x102
+            L3_R1 = 0x802
+	    elseif ReadString(0x09A9830,4) == 'KH2J' then --Steam Global
+            ConsolePrint("PC version (Steam global) detected")
+	    Sys3Pointer = 0x2AE5DD0
+	    Btl0Pointer = 0x2AE5DD8
+            Sys3 = ReadLong(Sys3Pointer)
+            Btl0 = ReadLong(Btl0Pointer)
+            Save = 0x09A9830
+	    Now = 0x0717008
+            input = Now - 0x3970
+            battle_state_address = 0x2A11384
+            pause_status_address = 0x0ABB7F8
+            is_controllable_address = 0x2A17168
+            menu_status_address = Now - 0x5B4
+            sora_level_stat = Btl0 + 0x25928
+            cure_cost = Sys3 + 0x0A70
+            cura_cost = Sys3 + 0x1700
+            curaga_cost = Sys3 + 0x1730
+            sora_unit_stat = 0x2A23518
+            mickey_adress1 = 0x3FC4CE
+            mickey_adress2 = 0x3FC55A
+            mickey_adress3 = 0x3C6365
+            DriveList = 0x3F29EE
+            DriveWithoutParty = 0x401B84
+            DriveWithoutForcedParty = 0x3E34CC
+            DriveForceEvents = 0x401BD8
+            PartyWontRemove = 0x400814
+            RoomTransitionDontRemoveParty = 0x3C2C1E
+            DriveWhenPartyisDead = 0x3F2A0A
+            current_form_adress = Save + 0x3524
+            current_summon_adress = Save + 0x3525
+            L3_triangle = 0x1002
+            L3_square = 0x8002
+            L3_circle = 0x2002
+            L3_cross = 0x4002
+            L3_L1 = 0x402
+            L3_L2 = 0x102
+            L3_R1 = 0x802
+	    elseif ReadString(0x09A8830,4) == 'KH2J' then --Steam JP
+	    Sys3Pointer = 0x2AE4DD0
+	    Btl0Pointer = 0x2AE4DD8
+            Sys3 = ReadLong(Sys3Pointer)
+            Btl0 = ReadLong(Btl0Pointer)
+            Save = 0x09A8830
+            Now = 0x0716008
+            input = Now - 0x3970
+            battle_state_address = 0x2A10384
+            pause_status_address = 0x0ABA7F8
+            is_controllable_address = 0x2A16168
+            menu_status_address = Now - 0x5B4
+            sora_level_stat = Btl0 + 0x25928
+            cure_cost = Sys3 + 0x0A70
+            cura_cost = Sys3 + 0x1700
+            curaga_cost = Sys3 + 0x1730
+            sora_unit_stat = 0x2A22518
+            mickey_adress1 = 0x3FC24E
+            mickey_adress2 = 0x3FC2DA
+            mickey_adress3 = 0x3C60E5
+            DriveList = 0x3F276E
+            DriveWithoutParty = 0x401904
+            DriveWithoutForcedParty = 0x3E324C
+            DriveForceEvents = 0x401958
+            PartyWontRemove = 0x400594
+            RoomTransitionDontRemoveParty = 0x3C299E
+            DriveWhenPartyisDead = 0x3F278A
+            current_form_adress = Save + 0x3524
+            current_summon_adress = Save + 0x3525
+            L3_triangle = 0x1002
+            L3_square = 0x8002
+            L3_circle = 0x2002
+            L3_cross = 0x4002
+            L3_L1 = 0x402
+            L3_L2 = 0x102
+            L3_R1 = 0x802
+        end
+    end
 end
 
 function _OnFrame()
     if has_to_init and frame == 110 then
-        if ReadInt(sora_level_stat) > 40 then
+        adress_init()
+        if ReadInt(sora_level_stat, true) > 40 then
             ConsolePrint("Rando detected")
             rando_offset = 0x580
         else
@@ -56,12 +147,9 @@ function _OnFrame()
             rando_offset = 0
         end
 
-        mickey1_0_0_2[1] = ReadArray(0x3FA07E - offset, 5)
-        mickey1_0_0_2[2] = ReadArray(0x3FA10A - offset, 2)
-        mickey1_0_0_2[3] = ReadArray(0x3C3F15 - offset, 8)
-        mickey1_0[1] = ReadArray(0x3F9EEE - offset, 5)
-        mickey1_0[2] = ReadArray(0x3F9F7A - offset, 2)
-        mickey1_0[3] = ReadArray(0x3C3D85 - offset, 8)
+        mickey[1] = ReadArray(mickey_adress1, 5)
+        mickey[2] = ReadArray(mickey_adress2, 2)
+        mickey[3] = ReadArray(mickey_adress3, 8)
 
         no_rule_drive[1] = ReadByte(DriveList)
         no_rule_drive[2] = ReadShort(DriveWithoutParty)
@@ -77,6 +165,9 @@ function _OnFrame()
         has_to_init = false
     end
 
+    frame = frame + 1
+
+    if has_to_init == false then
     battle_state = ReadInt(battle_state_address)
     pause_status = ReadInt(pause_status_address)
     menu_status = ReadByte(menu_status_address)
@@ -92,7 +183,6 @@ function _OnFrame()
     current_form = ReadByte(current_form_adress)
     current_summon = ReadByte(current_summon_adress)
 
-    frame = frame + 1
     update_drive_recharge()
 
     if is_longer_drive then
@@ -130,15 +220,6 @@ function _OnFrame()
         toggle_longer_drive()
     end
 
-    if is_mickey then
-        A = ReadLong(0x0ABA7E8 - offset)+0x170, true
-        B = ReadLong(0x0ABA7E8 - offset)+0x178, true
-
-        if ReadByte(0x714DB8 - offset) ~= 0xFF and ReadLong(A,true) == 0x0 then
-            WriteLong(A,ReadLong(B,true)-0x26A0, true)
-        end
-    end
-
     if frame == 60 then
         is_code_printed = false
     end
@@ -159,6 +240,7 @@ function _OnFrame()
         if is_hp then
             hp_recharge()
         end 
+    end
     end
 end
 
@@ -181,15 +263,15 @@ function toggle_cure()
 end
 
 function apply_cure()
-    WriteByte(cure, 25)
-    WriteByte(cura, 25)
-    WriteByte(curaga, 25)
+    WriteByte(cure_cost, 25, true)
+    WriteByte(cura_cost, 25, true)
+    WriteByte(curaga_cost, 25, true)
 end
 
 function remove_cure()
-    WriteByte(cure, 255)
-    WriteByte(cura, 255)
-    WriteByte(curaga, 255)
+    WriteByte(cure, 255, true)
+    WriteByte(cura_cost, 255, true)
+    WriteByte(curaga_cost, 255, true)
 end
 
 function toggle_drive_recharge()
@@ -337,29 +419,15 @@ function toggle_mickey()
 end
 
 function apply_mickey()
-    if ReadShort(0x3FA07E - offset) == 0x8DE8 then
-        WriteArray(0x3FA07E - offset, {0x90,0x90,0x90,0x90,0x90})
-        WriteArray(0x3FA10A - offset, {0x90,0x90})
-        WriteArray(0x3C3F15 - offset, {0x90,0x90,0x90,0x90,0x90,0x90,0x90,0x90})
-    end
-    if ReadShort(0x3F9EEE - offset) == 0xDDE8 then
-        WriteArray(0x3F9EEE - offset, {0x90,0x90,0x90,0x90,0x90})
-        WriteArray(0x3F9F7A - offset, {0x90,0x90})
-        WriteArray(0x3C3D85 - offset, {0x90,0x90,0x90,0x90,0x90,0x90,0x90,0x90})
-    end
+    WriteArray(mickey_adress1, {0x90,0x90,0x90,0x90,0x90})
+	WriteArray(mickey_adress2, {0x90,0x90})
+	WriteArray(mickey_adress3, {0x90,0x90,0x90,0x90,0x90,0x90,0x90,0x90})
 end
 
 function remove_mickey()
-    if ReadShort(0x3FA07E - offset) ~= 0x8DE8 and mickey1_0_0_2[1] ~= nil then
-        WriteArray(0x3FA07E - offset, mickey1_0_0_2[1])
-        WriteArray(0x3FA10A - offset, mickey1_0_0_2[2])
-        WriteArray(0x3C3F15 - offset, mickey1_0_0_2[3])
-    end
-    if ReadShort(0x3F9EEE - offset) == 0xDDE8 and mickey1_0[1] ~= nil then
-        WriteArray(0x3F9EEE - offset, mickey1_0[1])
-        WriteArray(0x3F9F7A - offset, mickey1_0[2])
-        WriteArray(0x3C3D85 - offset, mickey1_0[3])
-    end
+    WriteArray(mickey_adress1, mickey[1])
+    WriteArray(mickey_adress2, mickey[2])
+    WriteArray(mickey_adress3, mickey[3])
 end
 
 function toggle_no_rule_drive()
